@@ -20,6 +20,7 @@ namespace Msg_Tool
         private int cent_port_ = 0;
         private long last_login_tick_ = 0;
         private bool robot_run_ = false;
+        private bool robot_log_ = false;
         private string conf_path_ = "config/SYS_CONF.txt";
         private Dictionary<string, List<string>> conf_list_ = new Dictionary<string, List<string>>();
         private Dictionary<End_Point, Player> player_map_ = new Dictionary<End_Point, Player>();
@@ -111,6 +112,12 @@ namespace Msg_Tool
             {
                 cent_ip_ = value;
             }
+        }
+
+        public bool robot_log
+        {
+            get { return robot_log_; }
+            set { robot_log_ = value; }
         }
 
         public void begin_robot()
@@ -301,7 +308,7 @@ namespace Msg_Tool
                 {
                     last_login_tick_ = tick;
                     robot_login_++;
-                    Player p = new Player();
+                    Player p = new Player(robot_log_);
                     p.end_point.connect(cent_ip, cent_port_);
                 }
             }

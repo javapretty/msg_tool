@@ -61,7 +61,7 @@ namespace Msg_Tool
                 ep.socket_.EndConnect(ar);
                 ep.connect_status = true;
                 ep.player_.player_log("连接" + ep.ip_ + ":" + ep.port_.ToString() + "成功");
-                if (ep.player_.connect_to_gate)
+                if (ep.player_.robot_status != 0)
                 {
                     ep.player_.req_connect_gate();
                 }
@@ -104,13 +104,12 @@ namespace Msg_Tool
                 if (!connect_status_)
                     return -1;
 
-                //Log.debug_log("send data");
                 socket_.BeginSend(bytes, 0, length, 0, send_callback, this);
                 return 0;
             }
             catch (Exception ex) 
             {
-              //  Log.debug_log(ex.Message);
+                //Log.debug_log(ex.Message);
                 return -1;
             }
         }
@@ -125,7 +124,7 @@ namespace Msg_Tool
             }
             catch (Exception ex)
             {
-               // Log.debug_log(ex.Message);
+                //Log.debug_log(ex.Message);
             }
         }
 
@@ -160,7 +159,7 @@ namespace Msg_Tool
             catch (Exception ex)
             {
                 ep.disconnect();
-                if (ep.player_.connect_to_gate)
+                if (ep.player_.robot_status != 0)
                 {
                     Game_Manager.instance.rmv_player(ep.player_);
                 }

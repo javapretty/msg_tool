@@ -18,7 +18,7 @@ namespace Msg_Tool
             Log.set_form(this);
             if (Game_Manager.instance.init_conf() != 0)
             {
-                
+                return;
             }
             Thread_Manager.instance.start_timer();
         }
@@ -85,9 +85,10 @@ namespace Msg_Tool
             Game_Manager.instance.robot_num = int.Parse(Text_Box_Robot_Num.Text);
             Game_Manager.instance.send_interval = long.Parse(Text_Box_Send_Interval.Text) * (Radio_Sec.Checked == true ? 1000 : 1);
             Game_Manager.instance.login_interval = long.Parse(Text_Box_Login_Interval.Text) * (Radio_Sec.Checked == true ? 1000 : 1);
-            Game_Manager.instance.run_time = long.Parse(Text_Box_Run_Time.Text) * (Radio_Sec.Checked == true ? 1000 : 1);
+            Game_Manager.instance.run_time = long.Parse(Text_Box_Run_Time.Text) * 1000;
             Game_Manager.instance.cent_ip = Text_Box_IP.Text;
             Game_Manager.instance.cent_port = int.Parse(Text_Box_Port.Text);
+            Game_Manager.instance.robot_log = Check_Box_Robot_Log.Checked;
             Game_Manager.instance.begin_robot();
         }
 

@@ -174,9 +174,10 @@ namespace Msg_Tool
 		// notice: some bits may not use in last byte
         public int read_bits_available()
         {
-			if (r_byte_pos_ >= w_bit_pos_)
-				return 0;
-			return (w_byte_pos_ * 8 + w_bit_pos_) - (r_byte_pos_ * 8 + r_bit_pos_);
+            int available_size = (w_byte_pos_ * 8 + w_bit_pos_) - (r_byte_pos_ * 8 + r_bit_pos_);
+            if (available_size < 0)
+                available_size = 0;
+            return available_size;
 		}
 		
 		public bool read_bool()

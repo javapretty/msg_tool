@@ -53,6 +53,7 @@
             this.Text_Box_Login_Interval = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.Check_Box_Robot_Log = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // Text_Box_IP
@@ -61,7 +62,7 @@
             this.Text_Box_IP.Name = "Text_Box_IP";
             this.Text_Box_IP.Size = new System.Drawing.Size(100, 21);
             this.Text_Box_IP.TabIndex = 0;
-            this.Text_Box_IP.Text = "10.1.8.226";
+            this.Text_Box_IP.Text = "10.1.8.138";
             // 
             // label1
             // 
@@ -131,7 +132,7 @@
             // 
             // Button_Disconnect
             // 
-            this.Button_Disconnect.Location = new System.Drawing.Point(633, 12);
+            this.Button_Disconnect.Location = new System.Drawing.Point(629, 12);
             this.Button_Disconnect.Name = "Button_Disconnect";
             this.Button_Disconnect.Size = new System.Drawing.Size(75, 23);
             this.Button_Disconnect.TabIndex = 8;
@@ -158,7 +159,7 @@
             // 
             // Button_Init_Conf
             // 
-            this.Button_Init_Conf.Location = new System.Drawing.Point(715, 12);
+            this.Button_Init_Conf.Location = new System.Drawing.Point(711, 12);
             this.Button_Init_Conf.Name = "Button_Init_Conf";
             this.Button_Init_Conf.Size = new System.Drawing.Size(75, 23);
             this.Button_Init_Conf.TabIndex = 11;
@@ -168,7 +169,7 @@
             // 
             // Text_Box_Robot_Num
             // 
-            this.Text_Box_Robot_Num.Location = new System.Drawing.Point(449, 344);
+            this.Text_Box_Robot_Num.Location = new System.Drawing.Point(445, 344);
             this.Text_Box_Robot_Num.Name = "Text_Box_Robot_Num";
             this.Text_Box_Robot_Num.Size = new System.Drawing.Size(34, 21);
             this.Text_Box_Robot_Num.TabIndex = 13;
@@ -185,16 +186,16 @@
             // 
             // Text_Box_Send_Interval
             // 
-            this.Text_Box_Send_Interval.Location = new System.Drawing.Point(650, 344);
+            this.Text_Box_Send_Interval.Location = new System.Drawing.Point(637, 344);
             this.Text_Box_Send_Interval.Name = "Text_Box_Send_Interval";
             this.Text_Box_Send_Interval.Size = new System.Drawing.Size(32, 21);
             this.Text_Box_Send_Interval.TabIndex = 15;
-            this.Text_Box_Send_Interval.Text = "2";
+            this.Text_Box_Send_Interval.Text = "500";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(589, 349);
+            this.label5.Location = new System.Drawing.Point(579, 349);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(59, 12);
             this.label5.TabIndex = 14;
@@ -211,11 +212,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(687, 349);
+            this.label6.Location = new System.Drawing.Point(672, 349);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(59, 12);
+            this.label6.Size = new System.Drawing.Size(83, 12);
             this.label6.TabIndex = 16;
-            this.label6.Text = "运行时间:";
+            this.label6.Text = "运行时间(秒):";
             // 
             // Button_Robot_Login
             // 
@@ -240,37 +241,37 @@
             // Radio_Sec
             // 
             this.Radio_Sec.AutoSize = true;
-            this.Radio_Sec.Checked = true;
-            this.Radio_Sec.Location = new System.Drawing.Point(454, 374);
+            this.Radio_Sec.Location = new System.Drawing.Point(437, 374);
             this.Radio_Sec.Name = "Radio_Sec";
             this.Radio_Sec.Size = new System.Drawing.Size(35, 16);
             this.Radio_Sec.TabIndex = 20;
-            this.Radio_Sec.TabStop = true;
             this.Radio_Sec.Text = "秒";
             this.Radio_Sec.UseVisualStyleBackColor = true;
             // 
             // Radio_Msec
             // 
             this.Radio_Msec.AutoSize = true;
-            this.Radio_Msec.Location = new System.Drawing.Point(504, 374);
+            this.Radio_Msec.Checked = true;
+            this.Radio_Msec.Location = new System.Drawing.Point(470, 374);
             this.Radio_Msec.Name = "Radio_Msec";
             this.Radio_Msec.Size = new System.Drawing.Size(47, 16);
             this.Radio_Msec.TabIndex = 21;
+            this.Radio_Msec.TabStop = true;
             this.Radio_Msec.Text = "毫秒";
             this.Radio_Msec.UseVisualStyleBackColor = true;
             // 
             // Text_Box_Login_Interval
             // 
-            this.Text_Box_Login_Interval.Location = new System.Drawing.Point(549, 344);
+            this.Text_Box_Login_Interval.Location = new System.Drawing.Point(543, 344);
             this.Text_Box_Login_Interval.Name = "Text_Box_Login_Interval";
             this.Text_Box_Login_Interval.Size = new System.Drawing.Size(34, 21);
             this.Text_Box_Login_Interval.TabIndex = 23;
-            this.Text_Box_Login_Interval.Text = "1";
+            this.Text_Box_Login_Interval.Text = "500";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(488, 349);
+            this.label7.Location = new System.Drawing.Point(481, 349);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(59, 12);
             this.label7.TabIndex = 22;
@@ -281,15 +282,26 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(377, 377);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(65, 12);
+            this.label8.Size = new System.Drawing.Size(59, 12);
             this.label8.TabIndex = 24;
-            this.label8.Text = "时间单位：";
+            this.label8.Text = "时间单位:";
+            // 
+            // Check_Box_Robot_Log
+            // 
+            this.Check_Box_Robot_Log.AutoSize = true;
+            this.Check_Box_Robot_Log.Location = new System.Drawing.Point(523, 375);
+            this.Check_Box_Robot_Log.Name = "Check_Box_Robot_Log";
+            this.Check_Box_Robot_Log.Size = new System.Drawing.Size(84, 16);
+            this.Check_Box_Robot_Log.TabIndex = 25;
+            this.Check_Box_Robot_Log.Text = "机器人日志";
+            this.Check_Box_Robot_Log.UseVisualStyleBackColor = true;
             // 
             // Node_Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(808, 521);
+            this.Controls.Add(this.Check_Box_Robot_Log);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.Text_Box_Login_Interval);
             this.Controls.Add(this.label7);
@@ -352,6 +364,7 @@
         private System.Windows.Forms.TextBox Text_Box_Login_Interval;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox Check_Box_Robot_Log;
     }
 }
 

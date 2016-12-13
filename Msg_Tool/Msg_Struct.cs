@@ -13,7 +13,7 @@ namespace Msg_Tool
         private string struct_name_ = "";
 	    private int msg_id_ = 0;
 	    private string msg_name_ = "";
-        private List<field_info> field_list_ = new List<field_info>();
+        private List<Field_Info> field_list_ = new List<Field_Info>();
 
         public Msg_Struct(XmlNode node)
         {
@@ -36,7 +36,7 @@ namespace Msg_Tool
                 XmlNodeList sub_node_list = node.ChildNodes;
                 foreach(XmlNode sub_node in sub_node_list)
                 {
-                    field_info info = init_field(sub_node);
+                    Field_Info info = init_field(sub_node);
                     field_list_.Add(info);
                 }
             }
@@ -60,13 +60,13 @@ namespace Msg_Tool
             set { msg_name_ = value; }
         }
 
-        public List<field_info> field_list
+        public List<Field_Info> field_list
         {
             get { return field_list_; }
         }
 
-        field_info init_field(XmlNode node) {
-            field_info info = new field_info();
+        Field_Info init_field(XmlNode node) {
+            Field_Info info = new Field_Info();
 		    info.field_label = node.Name;
             
             XmlAttributeCollection attrc = node.Attributes;
@@ -111,7 +111,7 @@ namespace Msg_Tool
 			        XmlNodeList sub_node_list = node.ChildNodes;
 				    foreach(XmlNode sub_node in sub_node_list)
                     {
-					    field_info sub_field = init_field(sub_node);
+					    Field_Info sub_field = init_field(sub_node);
                         info.field_list.Add(sub_field);
                     }
 			    }
@@ -132,9 +132,9 @@ namespace Msg_Tool
             }
         }
 
-        private int set_msg_buffer(List<field_info> info_list, Bit_Buffer buffer, JObject jobject)
+        private int set_msg_buffer(List<Field_Info> info_list, Bit_Buffer buffer, JObject jobject)
         {
-            foreach (field_info info in info_list)
+            foreach (Field_Info info in info_list)
             {
                 if (info.field_label == "arg")
                 {
@@ -168,7 +168,7 @@ namespace Msg_Tool
 			        uint case_val = uint.Parse(jobject[info.field_name].ToString());
 			        buffer.write_uint(case_val, info.field_bit);
 
-			        foreach(field_info sub_info in info.field_list) {
+			        foreach(Field_Info sub_info in info.field_list) {
 				        if(sub_info.field_label == "case" && sub_info.case_val == case_val) {
 					        //找到对应的case标签，对case标签内的child数组进行build
                             int ret = set_msg_buffer(sub_info.field_list, buffer, jobject);
@@ -191,10 +191,10 @@ namespace Msg_Tool
             return "\r\n" + struct_name + ":{\r\n" + msg + "\r\n}";
         }
 
-        private string get_print_msg(List<field_info> info_list, Bit_Buffer buffer)
+        private string get_print_msg(List<Field_Info> info_list, Bit_Buffer buffer)
         { 
             string ret = "";
-            foreach(field_info info in info_list) {
+            foreach(Field_Info info in info_list) {
 		        if(info.field_label == "arg") {
 			        string value = get_arg_string(info, buffer);
 			        ret += value;
@@ -225,7 +225,7 @@ namespace Msg_Tool
                     if (buffer.read_bits_available() >= info.field_bit)
                     {
                         uint case_val = buffer.read_uint(info.field_bit);
-                        foreach (field_info swinfo in info.field_list)
+                        foreach (Field_Info swinfo in info.field_list)
                         {
                             if (swinfo.field_label == "case" && swinfo.case_val == case_val)
                             {
@@ -240,7 +240,7 @@ namespace Msg_Tool
             return ret;
         }
 
-        private string get_arg_string(field_info info, Bit_Buffer buffer, bool from_vector = false)
+        private string get_arg_string(Field_Info info, Bit_Buffer buffer, bool from_vector = false)
         {
             string ret = "";
             if(!from_vector)
@@ -284,7 +284,7 @@ namespace Msg_Tool
             return ret + ", ";
         }
 
-        private string get_vector_string(field_info info, Bit_Buffer buffer)
+        private string get_vector_string(Field_Info info, Bit_Buffer buffer)
         {
             string ret = info.field_name + ":[";
 	        uint length = buffer.read_uint(info.field_vbit);
@@ -301,7 +301,7 @@ namespace Msg_Tool
             return ret + "], ";
         }
 
-        private string get_struct_string(field_info info, Bit_Buffer buffer, bool from_vector = false)
+        private string get_struct_string(Field_Info info, Bit_Buffer buffer, bool from_vector = false)
         {
             string ret = "{";
             if (!from_vector)
@@ -323,7 +323,7 @@ namespace Msg_Tool
             return true;
         }
 
-        private int set_arg_buffer(field_info info, Bit_Buffer buffer, JValue value)
+        private int set_arg_buffer(Field_Info info, Bit_Buffer buffer, JValue value)
         {
             if (info.field_type == "int")
             {
@@ -363,7 +363,7 @@ namespace Msg_Tool
             return 0;
         }
 
-        private int set_vector_buffer(field_info info, Bit_Buffer buffer, JArray jarray)
+        private int set_vector_buffer(Field_Info info, Bit_Buffer buffer, JArray jarray)
         {
             int ret = 0;
             uint length = (uint)jarray.Count;
@@ -382,7 +382,7 @@ namespace Msg_Tool
             return 0;
         }
 
-        private int set_struct_buffer(field_info info, Bit_Buffer buffer, JObject jobject)
+        private int set_struct_buffer(Field_Info info, Bit_Buffer buffer, JObject jobject)
         {
             Msg_Struct msg = Struct_Manager.instance.get_msg_struct(info.field_type);
 	        if (msg == null) {
@@ -393,7 +393,7 @@ namespace Msg_Tool
         }
     }
 
-    class field_info
+    class Field_Info
     { 
         private string field_label_ = "";	   //字段标签
         private int field_vbit_ = 0;		    //数组字段长度位数
@@ -404,7 +404,7 @@ namespace Msg_Tool
         private string key_type_ = "";		//主键类型
         private int key_bit_ = 0;				//主键位数
         private string key_name_ = "";		//主键名称
-        private List<field_info> field_list_ = new List<field_info>();//if/switch使用存放子字段
+        private List<Field_Info> field_list_ = new List<Field_Info>();//if/switch使用存放子字段
 
         public string field_label
         {
@@ -460,9 +460,9 @@ namespace Msg_Tool
             set { key_name_ = value; }
         }
 
-        public List<field_info> field_list
+        public List<Field_Info> field_list
         {
-            get { return field_list; }
+            get { return field_list_; }            
         }
     }
 }

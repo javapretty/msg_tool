@@ -22,14 +22,17 @@ namespace Msg_Tool
         private long last_heartbeet_tick_ = 0;
         private long last_sendmsg_tick_ = 0;
         private int server_tick_ = 0;
+        private long send_interval_ = 0;
         private End_Point end_point_ = null;
-        private bool connect_to_gate_ = false;
+        private int robot_status_ = 0;
         private bool is_player_ = false;
+        private bool robot_log_ = false;
 
-        public Player()
+        public Player(bool robot_log)
         {
             account_ = get_ran_name();
             is_player_ = false;
+            robot_log_ = robot_log;
             end_point_ = new End_Point(this);
         }
 
@@ -55,11 +58,11 @@ namespace Msg_Tool
             }
         }
 
-        public bool connect_to_gate
+        public int robot_status
         {
             get
             {
-                return connect_to_gate_;
+                return robot_status_;
             }
         }
 
@@ -90,14 +93,16 @@ namespace Msg_Tool
             }
             if (!is_player)
             {
+                if (robot_status_ != 2)
+                    return;
                 if (login_time_ == 0)
                     login_time_ = tick;
                 Random ran = new Random();
-                long send_interval = (long)((double)Game_Manager.instance.send_interval * ( 2 * ran.NextDouble()));
-                if (tick - last_sendmsg_tick_ >= Game_Manager.instance.send_interval)
+                if (tick - last_sendmsg_tick_ >= send_interval_)
                 {
                     last_sendmsg_tick_ = tick;
                     send_msg_tick();
+                    send_interval_ = (long)((double)Game_Manager.instance.send_interval * ( 0.8 + 0.4 * ran.NextDouble()));
                 }
                 if (tick - login_time_ >= Game_Manager.instance.run_time)
                 {
@@ -119,7 +124,7 @@ namespace Msg_Tool
 
         public void req_heartbeat(long tick)
         {
-            if (!connect_to_gate || !end_point_.connect_status)
+            if (robot_status_ != 2 || !end_point_.connect_status)
                 return;
 
             Bit_Buffer buffer = new Bit_Buffer();
@@ -146,7 +151,7 @@ namespace Msg_Tool
                 "  gate_port:" + gate_port.ToString() + "\r\n" + 
                 "  token:" + token_ + "\r\n" +
                 "}");
-            connect_to_gate_ = true;
+            robot_status_ = 1;//准备连接gate服务器
             end_point_.disconnect();
             end_point_.connect(gate_ip, (int)gate_port);
             return 1;
@@ -165,6 +170,7 @@ namespace Msg_Tool
         {
             player_log("登录成功");
             req_fetch_role();
+            robot_status_ = 2;//已经连接上gate准备发消息
             return 0;
         }
 
@@ -266,7 +272,19 @@ namespace Msg_Tool
 
         public void player_log(string logstr)
         {
-            Log.debug_log("[" + account_ + "]: " + logstr, is_player);
+            if (is_player)
+            {
+                Log.debug_log("[" + account_ + "]: " + logstr, 0);
+            }
+            else if (robot_log_)
+            {
+                Log.debug_log("[" + account_ + "]: " + logstr, 2);
+            }
+            else
+            {
+                return;
+                //Log.debug_log("[" + account_ + "]: " + logstr, 3);
+            }
         }
     }
 }

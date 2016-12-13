@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Diagnostics;
 
 namespace Msg_Tool
 {
@@ -11,11 +12,18 @@ namespace Msg_Tool
     {
         static private Node_Client node_client_ = null;
         static private string log_path_ = "./logs/log_";
-        private delegate void debug_log_handler(string str, bool showmsg = true);
+        private delegate void debug_log_handler(string str, int log_mode = 0);
         static private debug_log_handler debug_log_handler_ = new debug_log_handler(debug_log);
+        static private System.IO.StreamWriter sw_ = null;
         
         private Log()
         { 
+        }
+
+        ~Log()
+        {
+            sw_.Close();
+            sw_.Dispose();
         }
 
         static public void set_form(Node_Client node_client)
@@ -27,19 +35,26 @@ namespace Msg_Tool
             }
         }
 
-        static public void debug_log(string logstr, bool showmsg = true)
+        static public void debug_log(string logstr, int log_mode = 0)
         {
+            /*
+             * 日志记录模式：
+             * 0：界面 + 文件
+             * 1：只界面
+             * 2：只文件
+             * 3：什么都不记录
+            */
             if (node_client_ == null)
             {
                 return;
             }
             if (node_client_.TextBoxLog.InvokeRequired == true)
             {
-                node_client_.TextBoxLog.Invoke(debug_log_handler_, new object[] { logstr, showmsg });
+                node_client_.TextBoxLog.Invoke(debug_log_handler_, new object[] { logstr, log_mode });
             }
-            else 
+            else
             {
-                if (showmsg)
+                if (log_mode == 0 || log_mode == 1)//日志模式为正常或只显示界面日志
                 {
                     if (node_client_.TextBoxLog.GetLineFromCharIndex(node_client_.TextBoxLog.Text.Length) > 1000)
                     {
@@ -47,19 +62,25 @@ namespace Msg_Tool
                     }
                     node_client_.TextBoxLog.AppendText(DateTime.Now.ToString("HH:mm:ss ") + logstr + "\r\n");
                 }
-                write_to_file(logstr);
+                if (log_mode == 0 || log_mode == 2)
+                {
+                    write_to_file(logstr);
+                }
             }
         }
 
         static private void write_to_file(string logstr)
         {
             DateTime dt = DateTime.Now;
-            string str = dt.ToString("yyyy-MM-dd");
-            string log_path = log_path_ + str + ".txt";
-            System.IO.StreamWriter sw = System.IO.File.AppendText(log_path);
-            sw.WriteLine(DateTime.Now.ToString("HH:mm:ss ") + logstr);
-            sw.Close();
-            sw.Dispose();
+            if (sw_ == null)
+            {
+                int pid = Process.GetCurrentProcess().Id;
+                string str = pid.ToString() + "_" + dt.ToString("yyyy-MM-dd");
+                string log_path = log_path_ + str + ".txt";
+                sw_ = System.IO.File.AppendText(log_path);
+            }
+            sw_.WriteLine(dt.ToString("HH:mm:ss ") + logstr);
+            sw_.Flush();
         }
 
         static public void clear_log() 
