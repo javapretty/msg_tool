@@ -116,7 +116,7 @@ namespace Msg_Tool
             uint high = BitConverter.ToUInt32(value, 0);
             uint low = BitConverter.ToUInt32(value, 4);*/
             uint high = (uint)(i >> 32);
-            uint low = (uint)(i | 0xffffffff);
+            uint low = (uint)(i & 0xffffffff);
             _write_uint32(high, 32);
             _write_uint32(low, 32);
         }   
@@ -130,7 +130,7 @@ namespace Msg_Tool
             uint low = BitConverter.ToUInt32(value, 4);
             */
             uint high = (uint)(i >> 32);
-            uint low = (uint)(i | 0xffffffff);
+            uint low = (uint)(i & 0xffffffff);
             _write_uint32(high, 32);
             _write_uint32(low, 32);
         }   

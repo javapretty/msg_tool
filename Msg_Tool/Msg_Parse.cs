@@ -125,6 +125,11 @@ namespace Msg_Tool
 
         static public int get_cmd_random()
         {
+            if (cmd_list_.Count <= 0)
+            {
+                return 0;
+            }                
+
             Random ran = new Random();
             int seq = ran.Next(0, cmd_list_.Count);
             int cmd_id = cmd_list_.Keys.ToList()[seq];
