@@ -154,15 +154,12 @@ namespace Msg_Tool
               
                 }
                 else if(info.field_label == "if") {
-			        bool field_exist = bool.Parse(jobject[info.field_name].ToString());
-			        buffer.write_bool(field_exist);
-
-			        if(field_exist) {
-				        int ret = set_msg_buffer(info.field_list, buffer, jobject);
-				        if(ret < 0) {
-					        return ret;
-				        }
-			        }
+			        buffer.write_bool(true);
+                    int ret = set_msg_buffer(info.field_list, buffer, jobject);
+                    if (ret < 0)
+                    {
+                        return ret;
+                    }
 		        }
 		        else if(info.field_label == "switch") {
 			        uint case_val = uint.Parse(jobject[info.field_name].ToString());
@@ -264,7 +261,7 @@ namespace Msg_Tool
 	        else if(info.field_type == "uint64") 
             {
 			    ulong val = buffer.read_uint64();
-			     ret += val.ToString();
+			    ret += val.ToString();
 	        }
 	        else if(info.field_type == "float")
             {
@@ -368,7 +365,7 @@ namespace Msg_Tool
             int ret = 0;
             uint length = (uint)jarray.Count;
             buffer.write_uint(length, info.field_vbit);
-            for (uint i = 0; i < length; ++i)
+            for (int i = 0; i < (int)length; ++i)
             {
                 if (is_struct(info.field_type))
                 {

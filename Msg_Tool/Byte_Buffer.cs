@@ -34,6 +34,18 @@ namespace Msg_Tool
             return data_;
         }
 
+        public int rpos
+        {
+            get { return r_pos_; }
+            set { r_pos_ = value; }
+        }
+
+        public int wpos
+        {
+            get { return w_pos_; }
+            set { w_pos_ = value; }
+        }
+
         public byte[] rdata()
         {
             byte[] data = new byte[readable_length()];
@@ -77,6 +89,11 @@ namespace Msg_Tool
         public void copy(byte[] data, int length)
         {
             write(data, length);
+        }
+
+        public void read_complete()
+        {
+            rpos = wpos;
         }
 
         private uint make_rpc_pkg_header(uint length, bool comp)

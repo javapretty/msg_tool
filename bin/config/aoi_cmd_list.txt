@@ -1,0 +1,5 @@
+1 => {msg_id:253, move_path:[{x:37,y:0},{x:75,y:0}]}
+2 => {msg_id:253, move_path:[{x:75,y:0},{x:75,y:35}]}
+3 => {msg_id:253， move_path:[{x:75,y:75},{x:35,y:75}]}
+4 => {msg_id:253, move_path:[{x:0,y:75},{x:0,y:35}]}
+5 => {msg_id:253, move_path:[{x:37,y:37}]}

@@ -1,0 +1,4 @@
+1 => {msg_id:7, mail_id:0}
+2 => {msg_id:201, guild_name:"guild_#<1,999999>"}
+3 => {msg_id:254, int4_arg:1, uint8_arg:255, uint4_arg:15}
+4 => {msg_id:255, exist:true, int32_arg:10000, type:1, int64_arg:10001}

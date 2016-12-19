@@ -44,14 +44,8 @@ namespace Msg_Tool
 
         public int robot_num
         {
-            get
-            {
-                return robot_num_;
-            }
-            set
-            {
-                robot_num_ = value;
-            }
+            get{ return robot_num_;}
+            set{ robot_num_ = value;}
         }
 
         public int cent_port
@@ -329,12 +323,8 @@ namespace Msg_Tool
             return 0;
         }
 
-        public int process_packet(End_Point ep, Byte_Buffer buffer)
+        private int process_packet(Player p, uint cmd, Bit_Buffer buf)
         {
-            buffer.read_uint16();
-            uint cmd = buffer.read_uint8();
-            Player p = get_player(ep);
-            Bit_Buffer buf = new Bit_Buffer(buffer.rdata(), buffer.readable_length());
             int ret = 0;
             switch (cmd)
             {
@@ -358,6 +348,81 @@ namespace Msg_Tool
                     break;
             }
             return ret;
+        }
+
+        public void process_buffer(End_Point ep, Byte_Buffer buffer)
+        {
+            Player p = get_player(ep);
+            while (buffer.readable_length() > 0)
+            {
+                if (p.end_point.merge_state == 0)
+                {
+                    uint read_len = 0;
+                    if (p.end_point.len_data == null)
+                    {
+                        if (buffer.readable_length() < 2)
+                        {
+                            p.end_point.len_data = new byte[2];
+                            p.end_point.len_data[0] = (byte)buffer.read_int8();
+                            p.end_point.merge_state = 1;
+                            return;
+                        }
+                        read_len = buffer.read_uint16();
+                    }
+                    else 
+                    {
+                        read_len = BitConverter.ToUInt16(p.end_point.len_data, 0);
+                    }
+                    uint len = (((read_len) & 0x1f) << 8) | (((read_len) & 0xff00) >> 8);
+                    if (p.end_point.buffer_data == null)
+                    {
+                        if (buffer.readable_length() < (int)len)
+                        {
+                            p.end_point.buffer_data = new Byte_Buffer();
+                            p.end_point.buffer_data.copy(buffer);
+                            p.end_point.remain = (int)len - buffer.readable_length();
+                            buffer.read_complete();
+                            p.end_point.merge_state = 2;
+                            return;
+                        }
+                        uint cmd = buffer.read_uint8();
+                        Bit_Buffer buf = new Bit_Buffer(buffer.rdata(), (int)len - 1);
+                        buffer.rpos += ((int)len - 1);
+                        process_packet(p, cmd, buf);
+                    }
+                    else
+                    {
+                        uint cmd = p.end_point.buffer_data.read_uint8();
+                        Bit_Buffer buf = new Bit_Buffer(p.end_point.buffer_data.rdata(), (int)len - 1);
+                        process_packet(p, cmd, buf);
+                        p.end_point.buffer_data = null;
+                    }
+                }
+                else
+                {
+                    if (p.end_point.merge_state == 1)
+                    {
+                        p.end_point.len_data[1] = (byte)buffer.read_int8();
+                        p.end_point.merge_state = 0;
+                    }
+                    else if (p.end_point.merge_state == 2)
+                    {
+                        if (buffer.readable_length() < p.end_point.remain)
+                        {
+                            p.end_point.buffer_data.copy(buffer);
+                            p.end_point.remain -= buffer.readable_length();
+                            buffer.read_complete();
+                            return;
+                        }
+                        else
+                        {
+                            p.end_point.buffer_data.copy(buffer.rdata(), p.end_point.remain);
+                            buffer.rpos += p.end_point.remain;
+                            p.end_point.merge_state = 0;
+                        }
+                    }
+                }
+            }
         }
 
         public void send_to_server(uint cmd_id, Bit_Buffer buffer)

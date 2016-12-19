@@ -14,7 +14,7 @@ namespace Msg_Tool
     {
         static private Msg_Parse instance_ = null;
         static private string cmd_input_pattern_ = "@[0-9]+";
-        static private string cmd_input_pattern2 = "[0-9]+";
+        static private string cmd_input_pattern2 = "^[0-9]*$";
         static private string cmd_seq_pattern_ = "[0-9]+ *=> *";
         static private string random_pattern_ = "#<[0-9]+, *[0-9]+> *";
         static private Dictionary<int, string> cmd_list_ = new Dictionary<int, string>();
@@ -125,11 +125,6 @@ namespace Msg_Tool
 
         static public int get_cmd_random()
         {
-            if (cmd_list_.Count <= 0)
-            {
-                return 0;
-            }                
-
             Random ran = new Random();
             int seq = ran.Next(0, cmd_list_.Count);
             int cmd_id = cmd_list_.Keys.ToList()[seq];

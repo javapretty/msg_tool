@@ -19,6 +19,7 @@ namespace Msg_Tool
 
         public Bit_Buffer(byte[] data, int length)
         {
+            ensure_space(length);
             Array.Copy(data, 0, data_, 0, length);
             byte_size_ = length;
             w_byte_pos_ = length;
@@ -31,6 +32,7 @@ namespace Msg_Tool
 			}
 
 			set {
+                ensure_space(value.Length);
                 Array.Copy(value, 0, data_, 0, value.Length);
                 byte_size_ = value.Length;
 				w_byte_pos_ 	= 0;

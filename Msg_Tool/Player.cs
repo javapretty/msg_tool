@@ -19,12 +19,12 @@ namespace Msg_Tool
         //private uint career_;
         private string token_;
         private long login_time_ = 0;
-        private long last_heartbeat_tick_ = 0;
+        private long last_heartbeet_tick_ = 0;
         private long last_sendmsg_tick_ = 0;
         private int server_tick_ = 0;
         private long send_interval_ = 0;
         private End_Point end_point_ = null;
-        private int robot_status_ = 0;
+        private int robot_status_ = 0;//0:准备连接center 1:准备连接gate 2:连上gate并收到返回消息
         private bool is_player_ = false;
         private bool robot_log_ = false;
 
@@ -86,9 +86,9 @@ namespace Msg_Tool
         {
             if (!end_point.connect_status)
                 return;
-            if (tick - last_heartbeat_tick_ >= 15000)
+            if (tick - last_heartbeet_tick_ >= 30000)
             {
-                last_heartbeat_tick_ = tick;
+                last_heartbeet_tick_ = tick;
                 req_heartbeat(tick);
             }
             if (!is_player)
@@ -114,12 +114,7 @@ namespace Msg_Tool
 
         private void send_msg_tick()
         {
-            int seq = Msg_Parse.get_cmd_random();
-            if (seq <= 0)
-            {
-                return;
-            }
-            req_any_data(seq);
+            req_any_data(Msg_Parse.get_cmd_random());
         }
 
         private void logout_tick(long tick)
@@ -175,7 +170,6 @@ namespace Msg_Tool
         {
             player_log("登录成功");
             req_fetch_role();
-            robot_status_ = 2;//已经连接上gate准备发消息
             return 0;
         }
 
@@ -234,6 +228,7 @@ namespace Msg_Tool
             if (msg == null)
                 return 0;
             player_log(msg.print_msg(buffer));
+            robot_status_ = 2;//已经连接上gate准备发消息
             return 0;
         }
 

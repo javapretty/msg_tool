@@ -16,6 +16,10 @@ namespace Msg_Tool
         private byte[] recv_bytes = new byte[65535];
         private string ip_;
         private int port_;
+        private byte[] len_data_ = null;
+        private Byte_Buffer buffer_data_ = null;
+        private int remain_ = 0;
+        private int merge_state_ = 0;//0:不需要组合 1：需要组合len 2：需要组合包体
 
         public End_Point(Player player) 
         {
@@ -32,6 +36,30 @@ namespace Msg_Tool
             {
                 connect_status_ = value;
             }
+        }
+
+        public byte[] len_data
+        {
+            get { return len_data_; }
+            set { len_data_ = value; }
+        }
+
+        public Byte_Buffer buffer_data
+        {
+            get { return buffer_data_; }
+            set { buffer_data_ = value; }
+        }
+
+        public int remain
+        {
+            get { return remain_; }
+            set { remain_ = value; }
+        }
+
+        public int merge_state
+        {
+            get { return merge_state_; }
+            set { merge_state_ = value; }
         }
 
         public bool connect(string ip, int port) 
@@ -152,7 +180,7 @@ namespace Msg_Tool
                 {
                     ep.player_.player_log("从服务器接收" + ret + "字节数据");
                     Byte_Buffer buffer = ep.get_buffer(ret);
-                    Game_Manager.instance.process_packet(ep, buffer);
+                    Game_Manager.instance.process_buffer(ep, buffer);
                     ep.recv();
                 }
             }
