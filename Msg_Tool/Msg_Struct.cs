@@ -210,11 +210,7 @@ namespace Msg_Tool
                 {
                     if (buffer.read_bits_available() >= 1 && buffer.read_bool())
                     {
-                        bool field_exist = buffer.read_bool();
-                        if (field_exist)
-                        {
-                            ret += get_print_msg(info.field_list, buffer);
-                        }
+                        ret += get_print_msg(info.field_list, buffer);
                     }
                 }
                 else if (info.field_label == "switch")
