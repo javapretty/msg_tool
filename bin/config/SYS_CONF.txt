@@ -1,3 +1,0 @@
-CMD_LIST_PATH   = config/cmd_list.txt
-ERROR_CODE_PATH = config/error_code.txt
-MSG_STRUCT_PATH = config/client_msg.xml:config/client_struct.xml
