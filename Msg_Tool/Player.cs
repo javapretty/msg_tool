@@ -19,7 +19,7 @@ namespace Msg_Tool
         //private uint career_;
         private string token_;
         private long login_time_ = 0;
-        private long last_heartbeet_tick_ = 0;
+        private long last_heartbeat_tick_ = 0;
         private long last_sendmsg_tick_ = 0;
         private int server_tick_ = 0;
         private long send_interval_ = 0;
@@ -86,9 +86,9 @@ namespace Msg_Tool
         {
             if (!end_point.connect_status)
                 return;
-            if (tick - last_heartbeet_tick_ >= 30000)
+            if (tick - last_heartbeat_tick_ >= 5000)
             {
-                last_heartbeet_tick_ = tick;
+                last_heartbeat_tick_ = tick;
                 req_heartbeat(tick);
             }
             if (!is_player)
@@ -283,7 +283,6 @@ namespace Msg_Tool
             else
             {
                 return;
-                //Log.debug_log("[" + account_ + "]: " + logstr, 3);
             }
         }
     }

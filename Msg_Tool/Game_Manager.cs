@@ -21,7 +21,7 @@ namespace Msg_Tool
         private long last_login_tick_ = 0;
         private bool robot_run_ = false;
         private bool robot_log_ = false;
-        private string conf_path_ = "config/SYS_CONF.txt";
+        private string conf_path_ = "config/sys_conf.txt";
         private Dictionary<string, List<string>> conf_list_ = new Dictionary<string, List<string>>();
         private Dictionary<End_Point, Player> player_map_ = new Dictionary<End_Point, Player>();
         private List<Player> drop_list_ = new List<Player>();
