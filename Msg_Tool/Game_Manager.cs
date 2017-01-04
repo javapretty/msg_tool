@@ -121,7 +121,7 @@ namespace Msg_Tool
             set { robot_log_ = value; }
         }
 
-        public void begin_robot()
+        public void robot_login()
         {
             lock (robot_run_moni_)
             {
@@ -131,11 +131,11 @@ namespace Msg_Tool
                     return;
                 }
                 robot_run_ = true;
-                Log.debug_log("开始运行机器人");
+                Log.debug_log("机器人开始登陆");
             }
         }
 
-        public void reset_robot()
+        public void robot_logout()
         {
             lock (robot_run_moni_)
             {
@@ -146,7 +146,7 @@ namespace Msg_Tool
                 }
                 robot_run_ = false;
                 robot_login_ = 0;
-                Log.debug_log("重置了机器人");
+                Log.debug_log("机器人开始下线");
             }
             lock (player_map_moni_)
             {
@@ -330,33 +330,6 @@ namespace Msg_Tool
             return 0;
         }
 
-        private int process_packet(Player p, uint cmd, Bit_Buffer buf)
-        {
-            int ret = 0;
-            switch (cmd)
-            {
-                case Enum.RES_HEARTBEAT:
-                    ret = p.res_heartbeat(buf);
-                    break;
-                case Enum.RES_SELECT_GATE:
-                    ret = p.res_select_gate(buf);
-                    break;
-                case Enum.RES_CONNECT_GATE:
-                    ret = p.res_connect_gate(buf);
-                    break;
-                case Enum.RES_FETCH_ROLE:
-                    ret = p.res_role_info(cmd, buf);
-                    break;
-                case Enum.RES_ERROR_CODE:
-                    ret = p.res_error_code(buf);
-                    break;
-                default:
-                    ret = p.res_recv_data(cmd, buf);
-                    break;
-            }
-            return ret;
-        }
-
         public void process_buffer(Endpoint ep, Byte_Buffer buffer)
         {
             Player p = get_player(ep);
@@ -440,6 +413,33 @@ namespace Msg_Tool
         public void send_to_server(int seq)
         {
             player_.req_any_data(seq);
+        }
+
+        private int process_packet(Player p, uint cmd, Bit_Buffer buf)
+        {
+            int ret = 0;
+            switch (cmd)
+            {
+                case Enum.RES_HEARTBEAT:
+                    ret = p.res_heartbeat(buf);
+                    break;
+                case Enum.RES_SELECT_GATE:
+                    ret = p.res_select_gate(buf);
+                    break;
+                case Enum.RES_CONNECT_GATE:
+                    ret = p.res_connect_gate(buf);
+                    break;
+                case Enum.RES_FETCH_ROLE:
+                    ret = p.res_role_info(cmd, buf);
+                    break;
+                case Enum.RES_ERROR_CODE:
+                    ret = p.res_error_code(buf);
+                    break;
+                default:
+                    ret = p.res_recv_data(cmd, buf);
+                    break;
+            }
+            return ret;
         }
     }
 }

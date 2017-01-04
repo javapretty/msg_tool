@@ -47,7 +47,7 @@
             this.Text_Box_Run_Time = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.Button_Robot_Login = new System.Windows.Forms.Button();
-            this.Button_Reset_Robot = new System.Windows.Forms.Button();
+            this.Button_Robot_Logout = new System.Windows.Forms.Button();
             this.Radio_Sec = new System.Windows.Forms.RadioButton();
             this.Radio_Msec = new System.Windows.Forms.RadioButton();
             this.Text_Box_Login_Interval = new System.Windows.Forms.TextBox();
@@ -228,15 +228,15 @@
             this.Button_Robot_Login.UseVisualStyleBackColor = true;
             this.Button_Robot_Login.Click += new System.EventHandler(this.Button_Robot_Login_Click);
             // 
-            // Button_Reset_Robot
+            // Button_Robot_Logout
             // 
-            this.Button_Reset_Robot.Location = new System.Drawing.Point(709, 372);
-            this.Button_Reset_Robot.Name = "Button_Reset_Robot";
-            this.Button_Reset_Robot.Size = new System.Drawing.Size(75, 23);
-            this.Button_Reset_Robot.TabIndex = 19;
-            this.Button_Reset_Robot.Text = "机器人下线";
-            this.Button_Reset_Robot.UseVisualStyleBackColor = true;
-            this.Button_Reset_Robot.Click += new System.EventHandler(this.Button_Reset_Robot_Click);
+            this.Button_Robot_Logout.Location = new System.Drawing.Point(709, 372);
+            this.Button_Robot_Logout.Name = "Button_Robot_Logout";
+            this.Button_Robot_Logout.Size = new System.Drawing.Size(75, 23);
+            this.Button_Robot_Logout.TabIndex = 19;
+            this.Button_Robot_Logout.Text = "机器人下线";
+            this.Button_Robot_Logout.UseVisualStyleBackColor = true;
+            this.Button_Robot_Logout.Click += new System.EventHandler(this.Button_Robot_Logout_Click);
             // 
             // Radio_Sec
             // 
@@ -307,7 +307,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.Radio_Msec);
             this.Controls.Add(this.Radio_Sec);
-            this.Controls.Add(this.Button_Reset_Robot);
+            this.Controls.Add(this.Button_Robot_Logout);
             this.Controls.Add(this.Button_Robot_Login);
             this.Controls.Add(this.Text_Box_Run_Time);
             this.Controls.Add(this.label6);
@@ -358,7 +358,7 @@
         private System.Windows.Forms.TextBox Text_Box_Run_Time;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button Button_Robot_Login;
-        private System.Windows.Forms.Button Button_Reset_Robot;
+        private System.Windows.Forms.Button Button_Robot_Logout;
         private System.Windows.Forms.RadioButton Radio_Sec;
         private System.Windows.Forms.RadioButton Radio_Msec;
         private System.Windows.Forms.TextBox Text_Box_Login_Interval;

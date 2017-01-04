@@ -89,12 +89,12 @@ namespace Msg_Tool
             Game_Manager.instance.center_ip = Text_Box_IP.Text;
             Game_Manager.instance.center_port = int.Parse(Text_Box_Port.Text);
             Game_Manager.instance.robot_log = Check_Box_Robot_Log.Checked;
-            Game_Manager.instance.begin_robot();
+            Game_Manager.instance.robot_login();
         }
 
-        private void Button_Reset_Robot_Click(object sender, EventArgs e)
+        private void Button_Robot_Logout_Click(object sender, EventArgs e)
         {
-            Game_Manager.instance.reset_robot();
+            Game_Manager.instance.robot_logout();
         }
     }
 }
