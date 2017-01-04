@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Game_Manager.cs
+ *
+ *  Created on: Dec 12, 2016
+ *      Author: zhangyalei
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +30,7 @@ namespace Msg_Tool
         private bool robot_log_ = false;
         private string conf_path_ = "config/sys_conf.txt";
         private Dictionary<string, List<string>> conf_list_ = new Dictionary<string, List<string>>();
-        private Dictionary<End_Point, Player> player_map_ = new Dictionary<End_Point, Player>();
+        private Dictionary<Endpoint, Player> player_map_ = new Dictionary<Endpoint, Player>();
         private List<Player> drop_list_ = new List<Player>();
         private object player_map_moni_ = new object();
         private object robot_run_moni_ = new object();
@@ -143,7 +150,7 @@ namespace Msg_Tool
             }
             lock (player_map_moni_)
             {
-                foreach (KeyValuePair<End_Point, Player> kv in player_map_)
+                foreach (KeyValuePair<Endpoint, Player> kv in player_map_)
                 {
                     if (kv.Value != user_)
                         drop_list_.Add(kv.Value);
@@ -158,7 +165,7 @@ namespace Msg_Tool
                 bool clear_map = true;
                 init_conf_path();
 
-                foreach(string path in conf_list_["MSG_STRUCT_PATH"])
+                foreach(string path in conf_list_["msg_struct_path"])
                 {
                     Struct_Manager.instance.load_config(path, clear_map);
                     if (clear_map)
@@ -166,7 +173,7 @@ namespace Msg_Tool
                 }
 
                 clear_map = true;
-                foreach (string path in conf_list_["CMD_LIST_PATH"])
+                foreach (string path in conf_list_["cmd_list_path"])
                 {
                     Msg_Parse.load_cmd_list(path, clear_map);
                     if (clear_map)
@@ -174,7 +181,7 @@ namespace Msg_Tool
                 }
 
                 clear_map = true;
-                foreach (string path in conf_list_["ERROR_CODE_PATH"])
+                foreach (string path in conf_list_["error_code_path"])
                 {
                     Error_Code.load_error_code(path, clear_map);
                     if (clear_map)
@@ -276,7 +283,7 @@ namespace Msg_Tool
             }
         }
 
-        public Player get_player(End_Point ep)
+        public Player get_player(Endpoint ep)
         { 
             lock (player_map_moni_)
             {
@@ -308,7 +315,7 @@ namespace Msg_Tool
             }
             lock (player_map_moni_)
             {
-                foreach (KeyValuePair<End_Point, Player> kv in player_map_)
+                foreach (KeyValuePair<Endpoint, Player> kv in player_map_)
                 {
                     kv.Value.do_tick(tick);
                 }
@@ -350,7 +357,7 @@ namespace Msg_Tool
             return ret;
         }
 
-        public void process_buffer(End_Point ep, Byte_Buffer buffer)
+        public void process_buffer(Endpoint ep, Byte_Buffer buffer)
         {
             Player p = get_player(ep);
             while (buffer.readable_length() > 0)

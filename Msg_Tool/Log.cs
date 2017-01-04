@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Log.cs
+ *
+ *  Created on: Dec 12, 2016
+ *      Author: zhangyalei
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +17,7 @@ namespace Msg_Tool
 {
     class Log
     {
-        static private Node_Client node_client_ = null;
+        static private Msg_Tool node_client_ = null;
         static private string log_path_ = "./logs/log_";
         private delegate void debug_log_handler(string str, int log_mode = 0);
         static private debug_log_handler debug_log_handler_ = new debug_log_handler(debug_log);
@@ -26,7 +33,7 @@ namespace Msg_Tool
             sw_.Dispose();
         }
 
-        static public void set_form(Node_Client node_client)
+        static public void set_form(Msg_Tool node_client)
         {
             node_client_ = node_client;
             if (Directory.Exists("./logs") == false)

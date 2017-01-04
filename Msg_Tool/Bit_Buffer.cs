@@ -1,6 +1,14 @@
+/*
+ * Bit_Buffer.cs
+ *
+ *  Created on: Dec 12, 2016
+ *      Author: zhangyalei
+ */
+
 using System;
 using System.Collections;
-using System.Text; 
+using System.Text;
+
 namespace Msg_Tool
 {
 	public class Bit_Buffer

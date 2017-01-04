@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Player.cs
+ *
+ *  Created on: Dec 12, 2016
+ *      Author: zhangyalei
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +30,7 @@ namespace Msg_Tool
         private long last_sendmsg_tick_ = 0;
         private int server_tick_ = 0;
         private long send_interval_ = 0;
-        private End_Point end_point_ = null;
+        private Endpoint end_point_ = null;
         private int robot_status_ = 0;//0:准备连接center 1:准备连接gate 2:连上gate并收到返回消息
         private bool is_player_ = false;
         private bool robot_log_ = false;
@@ -33,13 +40,13 @@ namespace Msg_Tool
             account_ = get_ran_name();
             is_player_ = false;
             robot_log_ = robot_log;
-            end_point_ = new End_Point(this);
+            end_point_ = new Endpoint(this);
         }
 
         public Player(string role_name)
         {
             account_ = role_name;
-            end_point_ = new End_Point(this);
+            end_point_ = new Endpoint(this);
             is_player_ = true;
         }
 
@@ -66,7 +73,7 @@ namespace Msg_Tool
             }
         }
 
-        public End_Point end_point
+        public Endpoint end_point
         {
             get 
             {

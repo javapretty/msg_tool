@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Msg_Struct.cs
+ *
+ *  Created on: Dec 12, 2016
+ *      Author: zhangyalei
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
