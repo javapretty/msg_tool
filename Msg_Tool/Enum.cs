@@ -17,21 +17,20 @@ namespace Msg_Tool
 {
     class Enum
     {
-        public const uint REQ_HEARTBEAT = 1;  //发送心跳到gate_server
+        public const uint REQ_HEARTBEAT = 1;    //发送心跳到gate_server
         public const uint RES_HEARTBEAT = 1;
 
-        public const uint REQ_SELECT_GATE = 2;    //选择gate_server
+        public const uint REQ_SELECT_GATE = 2;  //选择gate_server
         public const uint RES_SELECT_GATE = 2;
 
-        public const uint REQ_CONNECT_GATE = 3;  //登录gate_server
+        public const uint REQ_CONNECT_GATE = 3; //登录gate_server
         public const uint RES_CONNECT_GATE = 3;
 
-        public const uint REQ_FETCH_ROLE = 4;  //获取角色
+        public const uint REQ_FETCH_ROLE = 4;   //获取角色
         public const uint RES_FETCH_ROLE = 4;
 
-        public const uint REQ_CREATE_ROLE = 5;    //创建角色
-
-        public const uint RES_ERROR_CODE = 5;    //返回错误号
+        public const uint REQ_CREATE_ROLE = 5;  //创建角色
+        public const uint RES_ERROR_CODE = 5;   //返回错误号
     }
 
     class Error_Code

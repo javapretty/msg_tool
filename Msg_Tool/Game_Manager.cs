@@ -17,14 +17,14 @@ namespace Msg_Tool
     class Game_Manager
     {
         static private Game_Manager instance_ = null;
-        private Player user_ = null;
+        private Player player_ = null;
         private int robot_num_ = 0;
         private int robot_login_ = 0;
         private long send_interval_ = 0;
         private long login_interval_ = 0;
         private long run_time_ = 0;
-        private string cent_ip_ = "";
-        private int cent_port_ = 0;
+        private string center_ip_ = "";
+        private int center_port_ = 0;
         private long last_login_tick_ = 0;
         private bool robot_run_ = false;
         private bool robot_log_ = false;
@@ -53,18 +53,6 @@ namespace Msg_Tool
         {
             get{ return robot_num_;}
             set{ robot_num_ = value;}
-        }
-
-        public int cent_port
-        {
-            get
-            {
-                return cent_port_;
-            }
-            set
-            {
-                cent_port_ = value;
-            }
         }
 
         public long send_interval
@@ -103,15 +91,27 @@ namespace Msg_Tool
             }
         }
 
-        public string cent_ip
+        public string center_ip
         {
             get
             {
-                return cent_ip_;
+                return center_ip_;
             }
             set
             {
-                cent_ip_ = value;
+                center_ip_ = value;
+            }
+        }
+
+        public int center_port
+        {
+            get
+            {
+                return center_port_;
+            }
+            set
+            {
+                center_port_ = value;
             }
         }
 
@@ -152,7 +152,7 @@ namespace Msg_Tool
             {
                 foreach (KeyValuePair<Endpoint, Player> kv in player_map_)
                 {
-                    if (kv.Value != user_)
+                    if (kv.Value != player_)
                         drop_list_.Add(kv.Value);
                 }
             }
@@ -228,24 +228,24 @@ namespace Msg_Tool
 
         public bool status()
         {
-            if (user_ == null || user_.end_point.connect_status == false)
+            if (player_ == null || player_.end_point.connect_status == false)
                 return false;
             return true;
         }
 
         public void init_user(string role_name)
         {
-            if (user_ != null)
+            if (player_ != null)
             {
-                player_map_.Remove(user_.end_point);
-                user_ = null;
+                player_map_.Remove(player_.end_point);
+                player_ = null;
             }
-            user_ = new Player(role_name);
+            player_ = new Player(role_name);
         }
 
         public void connect(string ip, int port)
         {
-            user_.end_point.connect(ip, port);
+            player_.end_point.connect(ip, port);
         }
 
         public void fini_user()
@@ -255,8 +255,8 @@ namespace Msg_Tool
                 Log.debug_log("连接已断开");
                 return;
             }
-            user_.end_point.disconnect();
-            user_ = null;
+            player_.end_point.disconnect();
+            player_ = null;
         }
 
         public void add_player(Player p)
@@ -310,7 +310,7 @@ namespace Msg_Tool
                     last_login_tick_ = tick;
                     robot_login_++;
                     Player p = new Player(robot_log_);
-                    p.end_point.connect(cent_ip, cent_port_);
+                    p.end_point.connect(center_ip_, center_port_);
                 }
             }
             lock (player_map_moni_)
@@ -434,12 +434,12 @@ namespace Msg_Tool
 
         public void send_to_server(uint cmd_id, Bit_Buffer buffer)
         {
-            user_.end_point.send_to_server(cmd_id, buffer);
+            player_.end_point.send_to_server(cmd_id, buffer);
         }
 
         public void send_to_server(int seq)
         {
-            user_.req_any_data(seq);
+            player_.req_any_data(seq);
         }
     }
 }

@@ -19,11 +19,6 @@ namespace Msg_Tool
     class Player
     {
         private string account_;
-        //private long role_id_;
-        //private uint level_;
-        //private uint exp_;
-        //private uint gender_;
-        //private uint career_;
         private string token_;
         private long login_time_ = 0;
         private long last_heartbeat_tick_ = 0;
@@ -93,15 +88,19 @@ namespace Msg_Tool
         {
             if (!end_point.connect_status)
                 return;
+
             if (tick - last_heartbeat_tick_ >= 5000)
             {
                 last_heartbeat_tick_ = tick;
                 req_heartbeat(tick);
             }
+
             if (!is_player)
             {
+                //机器人未登陆前不发消息
                 if (robot_status_ != 2)
                     return;
+
                 if (login_time_ == 0)
                     login_time_ = tick;
                 Random ran = new Random();

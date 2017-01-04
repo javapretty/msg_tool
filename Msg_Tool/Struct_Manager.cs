@@ -90,6 +90,7 @@ namespace Msg_Tool
                     send_msg_id_map.Clear();
                     recv_msg_id_map.Clear();
                 }
+
                 XmlDocument xml = new XmlDocument();
                 xml.Load(path);
                 XmlNode root_node = xml.SelectSingleNode(xml.DocumentElement.Name);

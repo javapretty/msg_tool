@@ -17,8 +17,8 @@ namespace Msg_Tool
 {
     class Log
     {
-        static private Msg_Tool node_client_ = null;
-        static private string log_path_ = "./logs/log_";
+        static private Msg_Tool msg_tool_ = null;
+        static private string log_path_ = "./log/log_";
         private delegate void debug_log_handler(string str, int log_mode = 0);
         static private debug_log_handler debug_log_handler_ = new debug_log_handler(debug_log);
         static private System.IO.StreamWriter sw_ = null;
@@ -33,12 +33,12 @@ namespace Msg_Tool
             sw_.Dispose();
         }
 
-        static public void set_form(Msg_Tool node_client)
+        static public void set_form(Msg_Tool msg_tool)
         {
-            node_client_ = node_client;
-            if (Directory.Exists("./logs") == false)
+            msg_tool_ = msg_tool;
+            if (!Directory.Exists("./log"))
             {
-                Directory.CreateDirectory("./logs");
+                Directory.CreateDirectory("./log");
             }
         }
 
@@ -51,23 +51,24 @@ namespace Msg_Tool
              * 2：只文件
              * 3：什么都不记录
             */
-            if (node_client_ == null)
+            if (msg_tool_ == null)
             {
                 return;
             }
-            if (node_client_.TextBoxLog.InvokeRequired == true)
+
+            if (msg_tool_.TextBoxLog.InvokeRequired)
             {
-                node_client_.TextBoxLog.Invoke(debug_log_handler_, new object[] { logstr, log_mode });
+                msg_tool_.TextBoxLog.Invoke(debug_log_handler_, new object[] { logstr, log_mode });
             }
             else
             {
                 if (log_mode == 0 || log_mode == 1)//日志模式为正常或只显示界面日志
                 {
-                    if (node_client_.TextBoxLog.GetLineFromCharIndex(node_client_.TextBoxLog.Text.Length) > 1000)
+                    if (msg_tool_.TextBoxLog.GetLineFromCharIndex(msg_tool_.TextBoxLog.Text.Length) > 1000)
                     {
-                        node_client_.TextBoxLog.Text = "";
+                        msg_tool_.TextBoxLog.Text = "";
                     }
-                    node_client_.TextBoxLog.AppendText(DateTime.Now.ToString("HH:mm:ss ") + logstr + "\r\n");
+                    msg_tool_.TextBoxLog.AppendText(DateTime.Now.ToString("HH:mm:ss ") + logstr + "\r\n");
                 }
                 if (log_mode == 0 || log_mode == 2)
                 {
@@ -92,11 +93,11 @@ namespace Msg_Tool
 
         static public void clear_log() 
         {
-            if (node_client_ == null)
+            if (msg_tool_ == null)
             {
                 return;
             }
-            node_client_.TextBoxLog.Text = "";
+            msg_tool_.TextBoxLog.Text = "";
         }
 
         public static string get_line_and_name()
