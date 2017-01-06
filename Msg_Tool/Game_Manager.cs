@@ -167,6 +167,7 @@ namespace Msg_Tool
 
                 foreach(string path in conf_list_["msg_struct_path"])
                 {
+                    Log.debug_log("加载消息配置,path:" + path);
                     Struct_Manager.instance.load_config(path, clear_map);
                     if (clear_map)
                         clear_map = false;
@@ -175,6 +176,7 @@ namespace Msg_Tool
                 clear_map = true;
                 foreach (string path in conf_list_["cmd_list_path"])
                 {
+                    Log.debug_log("加载命令配置,path:" + path);
                     Msg_Parse.load_cmd_list(path, clear_map);
                     if (clear_map)
                         clear_map = false;
@@ -183,18 +185,16 @@ namespace Msg_Tool
                 clear_map = true;
                 foreach (string path in conf_list_["error_code_path"])
                 {
+                    Log.debug_log("加载错误号配置,path:" + path);
                     Error_Code.load_error_code(path, clear_map);
                     if (clear_map)
                         clear_map = false;
                 }
-
-                Log.debug_log("配置加载完成");
                 return 0;
             }
             catch (Exception ex)
             {
                 Log.debug_log(ex.Message);
-                Log.debug_log("配置加载失败，请检查各项配置文件");
                 return -1;
             }
         }

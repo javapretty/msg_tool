@@ -91,22 +91,29 @@ namespace Msg_Tool
                     recv_msg_id_map.Clear();
                 }
 
-                XmlDocument xml = new XmlDocument();
-                xml.Load(path);
-                XmlNode root_node = xml.SelectSingleNode(xml.DocumentElement.Name);
-                XmlNodeList struct_level_node_list = root_node.ChildNodes;
-                foreach (XmlNode node in struct_level_node_list) {
-                    Msg_Struct msg = new Msg_Struct(node);
-                    msg_name_map.Add(msg.struct_name, msg);
-                    if (msg.msg_id > 0)
+                XmlDocument doc = new XmlDocument();
+                //加载xml配置时候忽略注释
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments = true;
+                XmlReader reader = XmlReader.Create(path, settings);
+                doc.Load(reader);
+                XmlNode root_node = doc.SelectSingleNode(doc.DocumentElement.Name);
+                if (root_node != null)
+                {
+                    foreach (XmlNode node in root_node.ChildNodes)
                     {
-                        if (msg.msg_name.IndexOf("RES") == 0)
+                        Msg_Struct msg = new Msg_Struct(node);
+                        msg_name_map.Add(msg.struct_name, msg);
+                        if (msg.msg_id > 0)
                         {
-                            recv_msg_id_map.Add(msg.msg_id, msg);
-                        }
-                        else if (msg.msg_name.IndexOf("REQ") == 0)
-                        {
-                            send_msg_id_map.Add(msg.msg_id, msg);
+                            if (msg.msg_name.IndexOf("RES") == 0)
+                            {
+                                recv_msg_id_map.Add(msg.msg_id, msg);
+                            }
+                            else if (msg.msg_name.IndexOf("REQ") == 0)
+                            {
+                                send_msg_id_map.Add(msg.msg_id, msg);
+                            }
                         }
                     }
                 }

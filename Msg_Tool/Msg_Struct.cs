@@ -30,7 +30,7 @@ namespace Msg_Tool
             {
                 if(attr.Name == "msg_id")
                 {
-                    msg_id_ = int.Parse(attr.Value);    
+                    msg_id_ = int.Parse(attr.Value);
                 }
                 else if (attr.Name == "msg_name")
                 {
