@@ -412,7 +412,7 @@ namespace Msg_Tool
 
         public void send_to_server(int seq)
         {
-            player_.req_any_data(seq);
+            player_.req_client_msg(seq);
         }
 
         private int process_packet(Player p, uint cmd, Bit_Buffer buf)
@@ -420,23 +420,26 @@ namespace Msg_Tool
             int ret = 0;
             switch (cmd)
             {
-                case Enum.RES_HEARTBEAT:
+                case Msg.RES_HEARTBEAT:
                     ret = p.res_heartbeat(buf);
                     break;
-                case Enum.RES_SELECT_GATE:
+                case Msg.RES_SELECT_GATE:
                     ret = p.res_select_gate(buf);
                     break;
-                case Enum.RES_CONNECT_GATE:
+                case Msg.RES_CONNECT_GATE:
                     ret = p.res_connect_gate(buf);
                     break;
-                case Enum.RES_FETCH_ROLE:
-                    ret = p.res_role_info(cmd, buf);
+                case Msg.RES_ROLE_LIST:
+                    ret = p.res_role_list(buf);
                     break;
-                case Enum.RES_ERROR_CODE:
+                case Msg.RES_ENTER_GAME:
+                    ret = p.res_enter_game(buf);
+                    break;
+                case Msg.RES_ERROR_CODE:
                     ret = p.res_error_code(buf);
                     break;
                 default:
-                    ret = p.res_recv_data(cmd, buf);
+                    ret = p.res_server_msg(cmd, buf);
                     break;
             }
             return ret;

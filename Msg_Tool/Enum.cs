@@ -1,5 +1,5 @@
 ﻿/*
- * Enum.cs
+ * Msg.cs
  *
  *  Created on: Dec 12, 2016
  *      Author: zhangyalei
@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace Msg_Tool
 {
-    class Enum
+    class Msg
     {
         public const uint REQ_HEARTBEAT = 1;    //发送心跳到gate_server
         public const uint RES_HEARTBEAT = 1;
@@ -26,11 +26,15 @@ namespace Msg_Tool
         public const uint REQ_CONNECT_GATE = 3; //登录gate_server
         public const uint RES_CONNECT_GATE = 3;
 
-        public const uint REQ_FETCH_ROLE = 4;   //获取角色
-        public const uint RES_FETCH_ROLE = 4;
+        public const uint REQ_ROLE_LIST = 4;    //获取角色列表
+        public const uint RES_ROLE_LIST = 4;
 
-        public const uint REQ_CREATE_ROLE = 5;  //创建角色
-        public const uint RES_ERROR_CODE = 5;   //返回错误号
+        public const uint REQ_ENTER_GAME = 5;   //进入游戏
+        public const uint RES_ENTER_GAME = 5;
+
+        public const uint REQ_CREATE_ROLE = 6;   //创建角色
+
+        public const uint RES_ERROR_CODE = 255;  //返回错误号
     }
 
     class Error_Code
